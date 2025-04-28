@@ -5,9 +5,14 @@
  * ["object_field", minimum_bound, maximum_bound]
  */
 const sliderInfo = [
-  ["size",       0, 100],
-  ["offsetx",  -30,  30],
-  ["offsety", -100, 100]
+  ["line1_x1", 0, 100],
+  ["line1_y1", 0, 200],
+  ["line1_x2", 0, 100],
+  ["line1_y2", 0, 200],
+  ["line2_x1", 0, 100],
+  ["line2_y1", 0, 200],
+  ["line2_x2", 0, 100],
+  ["line2_y2", 0, 200]
 ];
 
 // PROBABLY DON'T NEED TO EDIT ANYTHING ELSE. STOP HERE.
@@ -50,10 +55,13 @@ function setup () {
   // rotation in degrees (more slider friendly)
   angleMode(DEGREES);
 
+  // Initial values for a larger shape (instead of all 50)
+  const initialValues = [25, 50, 75, 50, 25, 150, 75, 150];
+
   for(let i=0; i<numSliders; i++) {
     let cur_row = select("#row" + (i+1))
     cur_row.show();
-    let cur_slider = createSlider(0, 100, 50)
+    let cur_slider = createSlider(0, 100, initialValues[i])
     let containerString = "slider" + (i+1) + "Container"
     cur_slider.parent(containerString);
     param_sliders.push(cur_slider);

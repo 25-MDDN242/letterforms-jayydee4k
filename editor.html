@@ -5,147 +5,150 @@
     <script language="javascript" type="text/javascript" src="letters.js"></script>
     <script language="javascript" type="text/javascript" src="draw_letters.js"></script>
     <script language="javascript" type="text/javascript" src="editor.js"></script>
-    <style>
-        body   { padding: 0; margin: 0; }
-        .inner { position: absolute; }
+    <script language="javascript" type="text/javascript" src="custom.js"></script>
+    <link rel="stylesheet" href="styles.css">
+   <style>
+        .inner { position: relative; }
         #controls {
             font: 300 12px "Helvetica Neue";
-            padding: 5;
-            margin: 5;
+            padding: 10px;
+            margin: 0;
             background: #f0f0f0;
-            opacity: 0.7;
+            opacity: 0.9;
             -webkit-transition: opacity 0.2s ease;
             -moz-transition: opacity 0.2s ease;
             -o-transition: opacity 0.2s ease;
             -ms-transition: opacity 0.2s ease;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            border-radius: 5px;
+            max-width: 250px;
         }
-        #controls:hover { opacity: 0.9; }
+        #controls:hover { opacity: 1; }
     </style>
 </head>
-<body style="background-color:white">
+<body>
     <div class="outer">
         <div class="inner">
             <div id="canvasContainer"></div>
-<p>
-    Links to other sections:
-<ul>
-    <li><a href="sketch.html">sketch</a>
-    <li><a href="alphabet.html">alphabet</a>
-    <li><a href="editor.html">editor</a>
-    <li><a href="interaction.html">interaction</a>
-    <li><a href="index.html">exhibition</a>
-<ul>
-
-<p>
+            <div id="controls" height="500px">
+                <table class="home">
+                    <tr id="row1" style="display: none">
+                        <td>Param1</td>
+                        <td id="slider1Container"></td>
+                    </tr>
+                    <tr id="row2" style="display: none">
+                        <td>Param2</td>
+                        <td id="slider2Container"></td>
+                    </tr>
+                    <tr id="row3" style="display: none">
+                        <td>Param3</td>
+                        <td id="slider3Container"></td>
+                    </tr>
+                    <tr id="row4" style="display: none">
+                        <td>Param4</td>
+                        <td id="slider4Container"></td>
+                    </tr>
+                    <tr id="row5" style="display: none">
+                        <td>Param5</td>
+                        <td id="slider5Container"></td>
+                    </tr>
+                    <tr id="row6" style="display: none">
+                        <td>Param6</td>
+                        <td id="slider6Container"></td>
+                    </tr>
+                    <tr id="row7" style="display: none">
+                        <td>Param7</td>
+                        <td id="slider7Container"></td>
+                    </tr>
+                    <tr id="row8" style="display: none">
+                        <td>Param8</td>
+                        <td id="slider8Container"></td>
+                    </tr>
+                    <tr id="row9" style="display: none">
+                        <td>Param9</td>
+                        <td id="slider9Container"></td>
+                    </tr>
+                    <tr id="row10" style="display: none">
+                        <td>Param10</td>
+                        <td id="slider10Container"></td>
+                    </tr>
+                    <tr id="row11" style="display: none">
+                        <td>Param11</td>
+                        <td id="slider11Container"></td>
+                    </tr>
+                    <tr id="row12" style="display: none">
+                        <td>Param12</td>
+                        <td id="slider12Container"></td>
+                    </tr>
+                    <tr id="row13" style="display: none">
+                        <td>Param13</td>
+                        <td id="slider13Container"></td>
+                    </tr>
+                    <tr id="row14" style="display: none">
+                        <td>Param14</td>
+                        <td id="slider14Container"></td>
+                    </tr>
+                    <tr id="row15" style="display: none">
+                        <td>Param15</td>
+                        <td id="slider15Container"></td>
+                    </tr>
+                    <tr id="row16" style="display: none">
+                        <td>Param16</td>
+                        <td id="slider16Container"></td>
+                    </tr>
+                    <tr id="row17" style="display: none">
+                        <td>Param17</td>
+                        <td id="slider17Container"></td>
+                    </tr>
+                    <tr id="row18" style="display: none">
+                        <td>Param18</td>
+                        <td id="slider18Container"></td>
+                    </tr>
+                    <tr id="row19" style="display: none">
+                        <td>Param19</td>
+                        <td id="slider19Container"></td>
+                    </tr>
+                    <tr id="row20" style="display: none">
+                        <td>Param20</td>
+                        <td id="slider20Container"></td>
+                    </tr>
+                    <tr id="row21" style="display: none">
+                        <td>Param21</td>
+                        <td id="slider21Container"></td>
+                    </tr>
+                    <tr id="row22" style="display: none">
+                        <td>Param22</td>
+                        <td id="slider22Container"></td>
+                    </tr>
+                    <tr id="row23" style="display: none">
+                        <td>Param23</td>
+                        <td id="slider23Container"></td>
+                    </tr>
+                    <tr id="row24" style="display: none">
+                        <td>Param24</td>
+                        <td id="slider24Container"></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <hr>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="buttonContainer"></td>
+                        <p>Press the "d" key to see the bounding box</p>
+                    </tr>
+                </table>
+            </div>
         </div>
-        <div class="inner" id="controls" height="500px">
-            <table class="home">
-                <tr id="row1" style="display: none">
-                    <td>Param1</td>
-                    <td id="slider1Container"></td>
-                </tr>
-                <tr id="row2" style="display: none">
-                    <td>Param2</td>
-                    <td id="slider2Container"></td>
-                </tr>
-                <tr id="row3" style="display: none">
-                    <td>Param3</td>
-                    <td id="slider3Container"></td>
-                </tr>
-                <tr id="row4" style="display: none">
-                    <td>Param4</td>
-                    <td id="slider4Container"></td>
-                </tr>
-                <tr id="row5" style="display: none">
-                    <td>Param5</td>
-                    <td id="slider5Container"></td>
-                </tr>
-                <tr id="row6" style="display: none">
-                    <td>Param6</td>
-                    <td id="slider6Container"></td>
-                </tr>
-                <tr id="row7" style="display: none">
-                    <td>Param7</td>
-                    <td id="slider7Container"></td>
-                </tr>
-                <tr id="row8" style="display: none">
-                    <td>Param8</td>
-                    <td id="slider8Container"></td>
-                </tr>
-                <tr id="row9" style="display: none">
-                    <td>Param9</td>
-                    <td id="slider9Container"></td>
-                </tr>
-                <tr id="row10" style="display: none">
-                    <td>Param10</td>
-                    <td id="slider10Container"></td>
-                </tr>
-                <tr id="row11" style="display: none">
-                    <td>Param11</td>
-                    <td id="slider11Container"></td>
-                </tr>
-                <tr id="row12" style="display: none">
-                    <td>Param12</td>
-                    <td id="slider12Container"></td>
-                </tr>
-                <tr id="row13" style="display: none">
-                    <td>Param13</td>
-                    <td id="slider13Container"></td>
-                </tr>
-                <tr id="row14" style="display: none">
-                    <td>Param14</td>
-                    <td id="slider14Container"></td>
-                </tr>
-                <tr id="row15" style="display: none">
-                    <td>Param15</td>
-                    <td id="slider15Container"></td>
-                </tr>
-                <tr id="row16" style="display: none">
-                    <td>Param16</td>
-                    <td id="slider16Container"></td>
-                </tr>
-                <tr id="row17" style="display: none">
-                    <td>Param17</td>
-                    <td id="slider17Container"></td>
-                </tr>
-                <tr id="row18" style="display: none">
-                    <td>Param18</td>
-                    <td id="slider18Container"></td>
-                </tr>
-                <tr id="row19" style="display: none">
-                    <td>Param19</td>
-                    <td id="slider19Container"></td>
-                </tr>
-                <tr id="row20" style="display: none">
-                    <td>Param20</td>
-                    <td id="slider20Container"></td>
-                </tr>
-                <tr id="row21" style="display: none">
-                    <td>Param21</td>
-                    <td id="slider21Container"></td>
-                </tr>
-                <tr id="row22" style="display: none">
-                    <td>Param22</td>
-                    <td id="slider22Container"></td>
-                </tr>
-                <tr id="row23" style="display: none">
-                    <td>Param23</td>
-                    <td id="slider23Container"></td>
-                </tr>
-                <tr id="row24" style="display: none">
-                    <td>Param24</td>
-                    <td id="slider24Container"></td>
-                </tr>
-                <tr>
-                    <td>
-                        <hr>
-                    </td>
-                </tr>
-                <tr>
-                    <td id="buttonContainer"></td>
-                    <p>Press the "d" key to see the bounding box</p>
-                </tr>
-            </table>
-        </div>
+        <ul>
+            <li><a href="sketch.html">sketch</a></li>
+            <li><a href="alphabet.html">alphabet</a></li>
+            <li><a href="editor.html">editor</a></li>
+            <li><a href="interaction.html">interaction</a></li>
+            <li><a href="index.html">exhibition</a></li>
+        </ul>
     </div>
 </body>

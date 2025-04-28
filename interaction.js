@@ -4,15 +4,15 @@
  */
 
 if (typeof systemBackgroundColor === 'undefined') {
-    var systemBackgroundColor = "#e3eded";
+  var systemBackgroundColor = "#e3eded";
 }
 
 if (typeof systemLineColor === 'undefined') {
-    var systemLineColor = "#000090";
+  var systemLineColor = "#000090";
 }
 
 if (typeof systemBoxColor === 'undefined') {
-    var systemBoxColor = "#00c800";
+  var systemBoxColor = "#00c800";
 }
 
 const canvasWidth = 960;
@@ -23,7 +23,7 @@ let soloCurLetter = "B";
 let soloLastLetter = "A"
 let soloPrevObj = alphabet["default"];
 let soloIsAnimating = false;
-let soloNumAnimationFrames = 30;
+let soloNumAnimationFrames = 90;
 let soloCurAnimationFrame = 0;
 
 let debugBox = false;
@@ -31,170 +31,218 @@ let debugBox = false;
 // Handy string of all letters available
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789?";
 
-function setup () {
-  // create the drawing canvas, save the canvas element
-  main_canvas = createCanvas(canvasWidth, canvasHeight);
-  main_canvas.parent('canvasContainer');
+// Function to convert numbers to Roman numerals if not already defined
+if (typeof toRoman !== 'function') {
+  function toRoman(num) {
+    if (isNaN(num) || num < 1 || num > 3999) return "N/A";
+    
+    // Special case for simple 1-9 numerals to ensure they work correctly
+    const simpleRomans = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"];
+    if (num >= 1 && num <= 9) {
+      return simpleRomans[num-1];
+    }
+    
+    const romanNumerals = [
+      { value: 1000, numeral: "M" },
+      { value: 900, numeral: "CM" },
+      { value: 500, numeral: "D" },
+      { value: 400, numeral: "CD" },
+      { value: 100, numeral: "C" },
+      { value: 90, numeral: "XC" },
+      { value: 50, numeral: "L" },
+      { value: 40, numeral: "XL" },
+      { value: 10, numeral: "X" },
+      { value: 9, numeral: "IX" },
+      { value: 5, numeral: "V" },
+      { value: 4, numeral: "IV" },
+      { value: 1, numeral: "I" }
+    ];
+    
+    let result = "";
+    for (const romanNumeral of romanNumerals) {
+      while (num >= romanNumeral.value) {
+        result += romanNumeral.numeral;
+        num -= romanNumeral.value;
+      }
+    }
+    
+    return result;
+  }
+}
 
-  // with no animation, redrawing the screen is not necessary
-  // noLoop();
+function setup () {
+// create the drawing canvas, save the canvas element
+main_canvas = createCanvas(canvasWidth, canvasHeight);
+main_canvas.parent('canvasContainer');
+
+// with no animation, redrawing the screen is not necessary
+// noLoop();
 }
 
 function mouseClicked() {
-  debugBox = !debugBox;
-  // console.log("debugBox is now: " + debugBox);
-  redraw();
+debugBox = !debugBox;
+// console.log("debugBox is now: " + debugBox);
+redraw();
 }
 
 const interpolation_is_on = (typeof interpolate_letter === "function")
 
 function getCharacterInterpolationObj(percent, oldObj, newObj) {
-  if (interpolation_is_on) {
-    // safe to use the function
-    obj = interpolate_letter(percent, oldObj, newObj)
+if (interpolation_is_on) {
+  // safe to use the function
+  obj = interpolate_letter(percent, oldObj, newObj)
+}
+else {
+  if(percent == 0) {
+    obj = oldObj;
   }
   else {
-    if(percent == 0) {
-      obj = oldObj;
-    }
-    else {
-      obj = newObj;
-    }
+    obj = newObj;
   }
-  return obj;
+}
+return obj;
 }
 
 function getObjFromChar(c) {
-  if (c in alphabet) {
-    return alphabet[c];
-  }
-  else {
-    return alphabet["default"];
-  }  
+if (c in alphabet) {
+  return alphabet[c];
+}
+else {
+  return alphabet["default"];
+}  
 }
 
 function getCharacterInterpolation(percent, oldChar, newChar) {
-  let oldObj = getObjFromChar(oldChar);
-  let newObj = getObjFromChar(newChar);
-  return getCharacterInterpolationObj(percent, oldObj, newObj);
+let oldObj = getObjFromChar(oldChar);
+let newObj = getObjFromChar(newChar);
+return getCharacterInterpolationObj(percent, oldObj, newObj);
 }
 
 
 function computeCurrentSoloChar() {
-  // now figure out what object to draw
-  var obj;
-  if (soloIsAnimating) {
-    nextObj = getObjFromChar(soloCurLetter);
-    progress = map(soloCurAnimationFrame, 0, soloNumAnimationFrames, 0, 100);
-    obj = getCharacterInterpolationObj(progress, soloPrevObj, nextObj)
-  }
-  else {
-    obj = getObjFromChar(soloCurLetter);
-  }
-  return obj;
+// now figure out what object to draw
+var obj;
+if (soloIsAnimating) {
+  nextObj = getObjFromChar(soloCurLetter);
+  progress = map(soloCurAnimationFrame, 0, soloNumAnimationFrames, 0, 100);
+  obj = getCharacterInterpolationObj(progress, soloPrevObj, nextObj)
+}
+else {
+  obj = getObjFromChar(soloCurLetter);
+}
+return obj;
 }
 
 let hot_key_press = false;
 function draw () {
-  // clear screen
-  background(systemBackgroundColor);
+// clear screen
+background(systemBackgroundColor);
 
-  // draw the interpolation on the guidelines
-  push();
-  scale(0.5);
+// draw the interpolation on the guidelines
+push();
+scale(0.5);
 
-  // constants
-  const left_margin = 40;
-  const right_margin = 2*width - 40;
-  const top_margin = 80;
-  const bottom_margin = 2*height - 60;
-  const numSteps = 11;
-  const x_step = (right_margin - left_margin + 100) / (numSteps + 1)
-  const first_letter_offset_x = 20;
+// constants
+const left_margin = 40;
+const right_margin = 2*width - 40;
+const top_margin = 80;
+const bottom_margin = 2*height - 60;
+const numSteps = 11;
+const x_step = (right_margin - left_margin + 100) / (numSteps + 1)
+const first_letter_offset_x = 20;
 
-  translate(0, top_margin);
+translate(0, top_margin);
 
-  // draw lines
+// draw lines
+stroke(systemLineColor);
+line(left_margin, 0, right_margin, 0);
+for(let i=left_margin; i<right_margin-8; i+=30) {
+  line(i, 100, i+12, 100);
+}
+line(left_margin, 200, right_margin, 200);
+
+translate(left_margin+first_letter_offset_x, 0);
+for(let i=0; i<numSteps; i = i+1) {
+  let percent = map(i, 0, numSteps, 0, 100);
+  let curLetterObj = getCharacterInterpolation(percent, soloLastLetter, soloCurLetter);
+  // print(curLetterObj, soloLastLetter, soloCurLetter);
+  if (debugBox) {
+    noFill()
+    strokeWeight(4);
+    stroke(systemBoxColor);
+    rect(0, 0, 100, 200);
+  }
+
+  if (interpolation_is_on || (i==0 || i==numSteps-1)) {
+    drawLetter(curLetterObj);
+  }
   stroke(systemLineColor);
-  line(left_margin, 0, right_margin, 0);
-  for(let i=left_margin; i<right_margin-8; i+=30) {
-    line(i, 100, i+12, 100);
+  fill(systemLineColor);
+  textSize(50);
+  textAlign(CENTER)
+  if (i == 0) {
+    text(soloLastLetter, 50, 280);
   }
-  line(left_margin, 200, right_margin, 200);
-
-  translate(left_margin+first_letter_offset_x, 0);
-  for(let i=0; i<numSteps; i = i+1) {
-    let percent = map(i, 0, numSteps, 0, 100);
-    let curLetterObj = getCharacterInterpolation(percent, soloLastLetter, soloCurLetter);
-    // print(curLetterObj, soloLastLetter, soloCurLetter);
-    if (debugBox) {
-      noFill()
-      strokeWeight(4);
-      stroke(systemBoxColor);
-      rect(0, 0, 100, 200);
+  else if (i == (numSteps -1)) {
+    if (hot_key_press) {
+      rect(50-40, 280-40, 80, 80);
+      hot_key_press = false;
     }
-
-    if (interpolation_is_on || (i==0 || i==numSteps-1)) {
-      drawLetter(curLetterObj);
-    }
-    stroke(systemLineColor);
-    fill(systemLineColor);
-    textSize(50);
-    textAlign(CENTER)
-    if (i == 0) {
-      text(soloLastLetter, 50, 280);
-    }
-    else if (i == (numSteps -1)) {
-      if (hot_key_press) {
-        rect(50-40, 280-40, 80, 80);
-        hot_key_press = false;
-      }
-      text(soloCurLetter, 50, 280);
-    }
-    else if (interpolation_is_on) {
-      text("" + i*10 + "%", 50, 280);
-    }
-    translate(x_step, 0);
+    text(soloCurLetter, 50, 280);
   }
-  pop();
-
-  // now draw the letter full size below
-
-  // compute the center of the canvas
-  let center_x = canvasWidth / 2;  
-  let center_y = canvasHeight / 2;
-
-  // see if animation should be turned off
-  if(soloIsAnimating && soloCurAnimationFrame >= soloNumAnimationFrames) {
-    soloIsAnimating = false;
+  else if (interpolation_is_on) {
+    // Display percentage
+    let percentValue = i * 10;
+    text(percentValue, 50, 280);
   }
-  // if we are animating, increment the number of animation frames
-  if(soloIsAnimating) {
-    soloCurAnimationFrame = soloCurAnimationFrame + 1;
-  }
+  translate(x_step, 0);
+}
+pop();
 
-  push();
-  translate(center_x, center_y);
-  let cur_obj = computeCurrentSoloChar();
-  drawLetter(cur_obj);
-  pop();
+// now draw the letter full size below
+
+// compute the center of the canvas
+let center_x = canvasWidth / 2;  
+let center_y = canvasHeight / 2;
+
+// see if animation should be turned off
+if(soloIsAnimating && soloCurAnimationFrame >= soloNumAnimationFrames) {
+  soloIsAnimating = false;
+}
+// if we are animating, increment the number of animation frames
+if(soloIsAnimating) {
+  soloCurAnimationFrame = soloCurAnimationFrame + 1;
+}
+
+push();
+translate(center_x, center_y);
+let cur_obj = computeCurrentSoloChar();
+drawLetter(cur_obj);
+pop();
 }
 
 function keyTyped() {
-  if (key == '!') {
-    saveBlocksImages();
+if (key == '!') {
+  saveBlocksImages();
+}
+else if (key == '@') {
+  saveBlocksImages(true);
+}
+else {
+  lastKeyPressedTime = millis();
+  let upper_key = key.toUpperCase();
+  
+  // Convert number keys 1-9 to Roman numerals
+  if (key >= '1' && key <= '9') {
+    const romanNumerals = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"];
+    upper_key = romanNumerals[parseInt(key) - 1];
   }
-  else if (key == '@') {
-    saveBlocksImages(true);
-  }
-  else {
-    lastKeyPressedTime = millis();
-    let upper_key = key.toUpperCase();
-    hot_key_press = true;
-    soloPrevObj = computeCurrentSoloChar();
-    soloLastLetter = soloCurLetter;
-    soloCurLetter = upper_key;
-    soloIsAnimating = true;
-    soloCurAnimationFrame = 0;
-  }
+  
+  hot_key_press = true;
+  soloPrevObj = computeCurrentSoloChar();
+  soloLastLetter = soloCurLetter;
+  soloCurLetter = upper_key;
+  soloIsAnimating = true;
+  soloCurAnimationFrame = 0;
+}
 }

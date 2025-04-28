@@ -18,6 +18,45 @@ if (typeof systemBoxColor === 'undefined') {
 const canvasWidth = 960;
 const canvasHeight = 500;
 
+// Function to convert numbers to Roman numerals if not already defined
+if (typeof toRoman !== 'function') {
+  function toRoman(num) {
+    if (isNaN(num) || num < 1 || num > 3999) return "N/A";
+    
+    // Special case for simple 1-9 numerals to ensure they work correctly
+    const simpleRomans = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"];
+    if (num >= 1 && num <= 9) {
+      return simpleRomans[num-1];
+    }
+    
+    const romanNumerals = [
+      { value: 1000, numeral: "M" },
+      { value: 900, numeral: "CM" },
+      { value: 500, numeral: "D" },
+      { value: 400, numeral: "CD" },
+      { value: 100, numeral: "C" },
+      { value: 90, numeral: "XC" },
+      { value: 50, numeral: "L" },
+      { value: 40, numeral: "XL" },
+      { value: 10, numeral: "X" },
+      { value: 9, numeral: "IX" },
+      { value: 5, numeral: "V" },
+      { value: 4, numeral: "IV" },
+      { value: 1, numeral: "I" }
+    ];
+    
+    let result = "";
+    for (const romanNumeral of romanNumerals) {
+      while (num >= romanNumeral.value) {
+        result += romanNumeral.numeral;
+        num -= romanNumeral.value;
+      }
+    }
+    
+    return result;
+  }
+}
+
 // Handy string of all letters available
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789?";
 
