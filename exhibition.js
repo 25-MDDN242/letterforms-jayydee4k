@@ -212,7 +212,7 @@ function draw () {
     }
   }
 
-  background(systemBackgroundColor);
+  clear();
 
   // shorthand variables to allow margin
   var o = 20
